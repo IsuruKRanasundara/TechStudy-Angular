@@ -1,5 +1,4 @@
 
-const mongoose = require('mongoose');
 const User = require('../models/user.js'); // Assuming a User model exists
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
