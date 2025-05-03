@@ -96,5 +96,8 @@ const lecNoteController = {
     updateLecNote,
     deleteLecNote
 }
+
+
+
 module.exports = lecNoteController;
 

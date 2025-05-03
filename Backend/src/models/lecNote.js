@@ -13,6 +13,7 @@ const lecNoteSchema = new Schema({
         type: String,
         required: false,
     },
+    
     filePath: {
         type: String,
         required: true,
@@ -25,15 +26,30 @@ const lecNoteSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
     required: true,
-}
+    },
 
+
+
+
+
+   
+    technology: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Technology', // Reference to the Technology model
+        required: false,
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category', // Reference to the Category model
+        required: true,
+    },
 });
 
 
 
 
 
-const LecNote = mongoose.model('LecNote', lecNoteSchema);
-module.exports = LecNote;
+const lecNote = mongoose.model('LecNote', lecNoteSchema);
+module.exports = lecNote;
 
 
