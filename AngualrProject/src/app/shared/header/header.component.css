@@ -1,0 +1,9 @@
+.example-stretched-tabs {
+  max-width: 100%;
+}
+.example-stretched-tabs .mat-tab-labels {
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 500;
+  
+}
