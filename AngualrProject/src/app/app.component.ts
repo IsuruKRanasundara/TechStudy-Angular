@@ -7,6 +7,6 @@ import { FooterComponent } from "./shared/foter/foter.component";
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [HeaderComponent, FooterComponent], // Now valid
+  imports: [HeaderComponent, FooterComponent, ], // Now valid
 })
 export class AppComponent {}
