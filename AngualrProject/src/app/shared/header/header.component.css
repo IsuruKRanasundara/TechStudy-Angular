@@ -7,3 +7,41 @@
   font-weight: 500;
   
 }
+:host > div {
+  display: flex;
+  align-items: center;
+  transition: min-height 0.3s, padding 0.3s;
+  min-height: 56px;
+  padding: 0 16px;
+  background: #fff;
+}
+
+:host > div.shrink {
+  min-height: 40px;
+  padding: 0 8px;
+}
+
+button[mat-icon-button] {
+  margin-right: 8px;
+}
+
+app-side-nav {
+  margin-right: 16px;
+}
+
+mat-tab-group {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 800px) {
+  mat-tab-group {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  mat-tab-group {
+    display: none; /* Hide tabs on small screens for better mobile UX */
+  }
+}

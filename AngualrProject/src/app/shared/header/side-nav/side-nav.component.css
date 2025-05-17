@@ -1,0 +1,65 @@
+.header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: 56px; /* or your header height */
+  background: #fff;
+}
+
+.hamburger {
+  margin-right: 16px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.sidenav-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+mat-sidenav-content {
+  /* No margin or padding for sidenav */
+  height: 100%;
+}
+
+.child-item {
+  padding-left: 32px;
+}
+
+.sidenav-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 56px; /* match header height */
+  width: 100vw;
+  background: rgba(0,0,0,0.1); /* subtle overlay, optional */
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+}
+
+.sidenav-modal {
+  background: #fff;
+  width: 250px;
+  height: 56px; /* match header height */
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}

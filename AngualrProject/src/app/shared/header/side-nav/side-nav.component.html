@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@45,400,0,0&icon_names=filter_list" />
+<header class="header">
+  <button mat-icon-button (click)="toggleSidenav()" class="hamburger">
+    <mat-icon>
+      <span class="material-symbols-outlined" >
+        filter_list
+      </span>
+    </mat-icon>
+  </button>
+</header>
+
+<!-- Modal overlay for sidenav -->
+<div *ngIf="isSidenavOpen" class="sidenav-overlay" (click)="toggleSidenav()">
+  <div class="sidenav-modal" (click)="$event.stopPropagation()">
+    <mat-nav-list>
+      <ng-container *ngFor="let item of treeData">
+        <mat-list-item>
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>
+          <span>{{item.name}}</span>
+        </mat-list-item>
+        <ng-container *ngIf="item.children && item.children.length">
+          <mat-list dense>
+            <mat-list-item *ngFor="let child of item.children" class="child-item">
+              <mat-icon matListIcon>{{child.icon}}</mat-icon>
+              <span>{{child.name}}</span>
+            </mat-list-item>
+          </mat-list>
+        </ng-container>
+      </ng-container>
+    </mat-nav-list>
+  </div>
+</div>
+
+
