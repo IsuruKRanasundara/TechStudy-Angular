@@ -1,12 +1,54 @@
-<div class="header-row">
-  <app-side-nav></app-side-nav>
-  <mat-tab-group preserveContent="true" mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
-    <mat-tab label="Home"> </mat-tab>
-    <mat-tab label="About Us">  </mat-tab>
-    <mat-tab label="Contact">  </mat-tab>
-    <mat-tab label="FAQ">  </mat-tab>
-  </mat-tab-group>
-</div>
-<!-- Main page content goes here, outside the header-row -->
-
-
+<header class="header" [class.mobile-menu-open]="isMobileMenuOpen">
+      <a href="/" class="logo">Brand Logo</a>
+      
+      <button class="hamburger" (click)="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <div class="overlay" (click)="closeMobileMenu()"></div>
+      
+      <nav class="nav-container">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a [routerLink]="['/']" class="nav-link" [class.active]="isActive('/')" (click)="closeMobileMenu()">Home</a>
+          </li>
+          
+          <li class="nav-item dropdown" [class.mobile-expanded]="mobileExpandedItem === 'products'">
+            <a class="nav-link" (click)="toggleMobileDropdown('products')">
+              Products <span>▼</span>
+            </a>
+            <div class="dropdown-content">
+              <a [routerLink]="['/products/category-1']" class="dropdown-item" (click)="closeMobileMenu()">Category 1</a>
+              <a [routerLink]="['/products/category-2']" class="dropdown-item" (click)="closeMobileMenu()">Category 2</a>
+              <a [routerLink]="['/products/category-3']" class="dropdown-item" (click)="closeMobileMenu()">Category 3</a>
+            </div>
+          </li>
+          
+          <li class="nav-item dropdown" [class.mobile-expanded]="mobileExpandedItem === 'services'">
+            <a class="nav-link" (click)="toggleMobileDropdown('services')">
+              Services <span>▼</span>
+            </a>
+            <div class="dropdown-content">
+              <a [routerLink]="['/services/service-1']" class="dropdown-item" (click)="closeMobileMenu()">Service 1</a>
+              <a [routerLink]="['/services/service-2']" class="dropdown-item" (click)="closeMobileMenu()">Service 2</a>
+              <a [routerLink]="['/services/service-3']" class="dropdown-item" (click)="closeMobileMenu()">Service 3</a>
+            </div>
+          </li>
+          
+          <li class="nav-item">
+            <a [routerLink]="['/about']" class="nav-link" [class.active]="isActive('/about')" (click)="closeMobileMenu()">About</a>
+          </li>
+          
+          <li class="nav-item">
+            <a [routerLink]="['/contact']" class="nav-link" [class.active]="isActive('/contact')" (click)="closeMobileMenu()">Contact</a>
+          </li>
+        </ul>
+        
+        <div class="auth-buttons">
+          <button class="btn btn-outline" (click)="closeMobileMenu()">Sign In</button>
+          <button class="btn btn-primary" (click)="closeMobileMenu()">Sign Up</button>
+        </div>
+      </nav>
+    </header>
