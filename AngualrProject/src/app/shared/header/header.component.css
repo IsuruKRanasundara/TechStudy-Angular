@@ -147,8 +147,9 @@
     }
 
     .btn-primary:hover {
-      background-color: #2563eb;
+      background-color: white;
       border-color: #2563eb;
+      color: #2563eb ;
     }
 
     @media (max-width: 768px) {

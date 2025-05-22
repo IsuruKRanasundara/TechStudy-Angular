@@ -15,27 +15,9 @@
             <a [routerLink]="['/']" class="nav-link" [class.active]="isActive('/')" (click)="closeMobileMenu()">Home</a>
           </li>
           
-          <li class="nav-item dropdown" [class.mobile-expanded]="mobileExpandedItem === 'products'">
-            <a class="nav-link" (click)="toggleMobileDropdown('products')">
-              Products <span>▼</span>
-            </a>
-            <div class="dropdown-content">
-              <a [routerLink]="['/products/category-1']" class="dropdown-item" (click)="closeMobileMenu()">Category 1</a>
-              <a [routerLink]="['/products/category-2']" class="dropdown-item" (click)="closeMobileMenu()">Category 2</a>
-              <a [routerLink]="['/products/category-3']" class="dropdown-item" (click)="closeMobileMenu()">Category 3</a>
-            </div>
-          </li>
           
-          <li class="nav-item dropdown" [class.mobile-expanded]="mobileExpandedItem === 'services'">
-            <a class="nav-link" (click)="toggleMobileDropdown('services')">
-              Services <span>▼</span>
-            </a>
-            <div class="dropdown-content">
-              <a [routerLink]="['/services/service-1']" class="dropdown-item" (click)="closeMobileMenu()">Service 1</a>
-              <a [routerLink]="['/services/service-2']" class="dropdown-item" (click)="closeMobileMenu()">Service 2</a>
-              <a [routerLink]="['/services/service-3']" class="dropdown-item" (click)="closeMobileMenu()">Service 3</a>
-            </div>
-          </li>
+          
+          
           
           <li class="nav-item">
             <a [routerLink]="['/about']" class="nav-link" [class.active]="isActive('/about')" (click)="closeMobileMenu()">About</a>
