@@ -1,0 +1,161 @@
+
+
+ <div class="auth-layout">
+<div class="leftBackground"></div>
+<div class="rightBackground">
+<div class="signup-container">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h1>StudyTech</h1>
+    <p>Discover and manage your modules effortlessly</p>
+  </div>
+
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input 
+          type="text" 
+          id="firstName" 
+          formControlName="firstName"
+          [class.error]="isFieldInvalid('firstName')"
+          placeholder="Enter your first name">
+        <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+          {{ getErrorMessage('firstName') }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input 
+          type="text" 
+          id="lastName" 
+          formControlName="lastName"
+          [class.error]="isFieldInvalid('lastName')"
+          placeholder="Enter your last name">
+        <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+          {{ getErrorMessage('lastName') }}
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email"
+        [class.error]="isFieldInvalid('email')"
+        placeholder="Enter your email address">
+      <div class="error-message" *ngIf="isFieldInvalid('email')">
+        {{ getErrorMessage('email') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select 
+        id="role" 
+        formControlName="role"
+        [class.error]="isFieldInvalid('role')">
+        <option value="">Select your role</option>
+        <option *ngFor="let role of roles" [value]="role.value">
+          {{ role.label }}
+        </option>
+      </select>
+      <div class="error-message" *ngIf="isFieldInvalid('role')">
+        {{ getErrorMessage('role') }}
+      </div>
+    </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-field">
+        <input 
+          [type]="showPassword ? 'text' : 'password'" 
+          id="password" 
+          formControlName="password"
+          [class.error]="isFieldInvalid('password')"
+          placeholder="Create a strong password">
+        <button 
+          type="button" 
+          class="password-toggle" 
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+          {{ showPassword ? '🙈' : '👁' }}
+        </button>
+      </div>
+      <div class="error-message" *ngIf="isFieldInvalid('password')">
+        {{ getErrorMessage('password') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <div class="password-field">
+        <input 
+          [type]="showConfirmPassword ? 'text' : 'password'" 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          [class.error]="isFieldInvalid('confirmPassword') || signupForm.errors?.['passwordMismatch']"
+          placeholder="Confirm your password">
+        <button 
+          type="button" 
+          class="password-toggle" 
+          (click)="toggleConfirmPasswordVisibility()"
+          [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
+          {{ showConfirmPassword ? '🙈' : '👁' }}
+        </button>
+      </div>
+      <div class="error-message" *ngIf="isFieldInvalid('confirmPassword') || (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched)">
+        {{ getErrorMessage('confirmPassword') }}
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <input 
+        type="checkbox" 
+        id="terms" 
+        formControlName="terms"
+        [class.error]="isFieldInvalid('terms')">
+      <label for="terms">
+        I agree to the <a href="#" target="_blank">Terms of Service</a> and 
+        <a href="#" target="_blank">Privacy Policy</a>
+      </label>
+    </div>
+    <div class="error-message" *ngIf="isFieldInvalid('terms')" style="margin-top: -16px; margin-bottom: 16px;">
+      You must agree to the terms and conditions
+    </div>
+
+    <button 
+      type="submit" 
+      class="signup-btn"
+      [disabled]="isLoading"
+      [class.loading]="isLoading">
+      <span *ngIf="!isLoading">Create Account</span>
+      <span *ngIf="isLoading" class="loading-spinner">Creating Account...</span>
+    </button>
+  </form>
+
+  <div class="divider">
+    <span>or continue with</span>
+  </div>
+
+  <div class="social-login">
+    <button class="social-btn" (click)="signupWithGoogle()" [disabled]="isLoading">
+      <span>🔍</span> Google
+    </button>
+    <button class="social-btn" (click)="signupWithGithub()" [disabled]="isLoading">
+      <span>🐙</span> GitHub
+    </button>
+  </div>
+  <div class="login-link">
+    Already have an account? <a [routerLink]="['./signIn']" (click)="goToLogin()" style="cursor: pointer;">Sign in</a>
+  </div>
+</div>
+</div>
+</div>

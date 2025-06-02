@@ -29,8 +29,8 @@
         </ul>
         
         <div class="auth-buttons">
-          <button class="btn btn-outline" (click)="closeMobileMenu()">Sign In</button>
-          <button class="btn btn-primary" (click)="closeMobileMenu()">Sign Up</button>
+          <button [routerLink]="['/signIn']" class="btn btn-outline" (click)="closeMobileMenu()">Sign In</button>
+          <button [routerLink]="['/signUp']" class="btn btn-primary" (click)="closeMobileMenu()">Sign Up</button>
         </div>
       </nav>
     </header>

@@ -18,6 +18,28 @@ export const appRoutes: Routes = [
           title: 'About Us',
           description: 'Learn more about our organization and mission.'
         }
+  }, {
+        path: 'contact',
+        loadComponent: () => import('./layout/contact-page/contact-page.component').then(m => m.ContactComponent),
+        data: {
+          title: 'contact',
+          description: 'Contact If having any concern about the content or furthere clarification'
+        }
+  }, {
+      path: 'signIn',
+      loadComponent: () => import('./layout/signin-page/signin-page.component').then(m => m.SigninPageComponent),
+      data: {
+        title: 'signIn',
+        description:'SignIn explore the Knowledge in Technology Field'
+      }
+  }, 
+       {
+      path: 'signUp',
+      loadComponent: () => import('./layout/sign-up-page/sign-up-page.component').then(m => m.SignupComponent),
+      data: {
+        title: 'signUp',
+        description:'SignUp first to logIn to the System to Explore the knowledge'
+      }
     },
     
   { path: '**', redirectTo: '', pathMatch: 'full' }

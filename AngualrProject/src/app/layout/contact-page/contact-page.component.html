@@ -1,0 +1,219 @@
+<!-- contact.component.html -->
+<div class="contact-container">
+  <div class="contact-header">
+    <h1>Contact Us</h1>
+    <p>Get in touch with our technology experts</p>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="submitSuccess" class="alert alert-success">
+    <i class="fas fa-check-circle"></i>
+    Thank you for your message! We'll get back to you within 24 hours.
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="submitError" class="alert alert-error">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ submitError }}
+  </div>
+
+  <form [formGroup]="contactForm"  (ngSubmit)="onSubmit()" class="contact-form">
+    <!-- Personal Information Section -->
+    <div class="form-section">
+      <h3>Personal Information</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name *</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            [class.error]="isFieldInvalid('firstName')"
+            placeholder="Enter your first name">
+          <div *ngIf="isFieldInvalid('firstName')" class="error-message">
+            {{ getFieldError('firstName') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name *</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            [class.error]="isFieldInvalid('lastName')"
+            placeholder="Enter your last name">
+          <div *ngIf="isFieldInvalid('lastName')" class="error-message">
+            {{ getFieldError('lastName') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            [class.error]="isFieldInvalid('email')"
+            placeholder="your.email@company.com">
+          <div *ngIf="isFieldInvalid('email')" class="error-message">
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            formControlName="phone"
+            [class.error]="isFieldInvalid('phone')"
+            placeholder="+1 (555) 123-4567">
+          <div *ngIf="isFieldInvalid('phone')" class="error-message">
+            {{ getFieldError('phone') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input
+            type="text"
+            id="company"
+            formControlName="company"
+            placeholder="Your company name">
+        </div>
+
+        <div class="form-group">
+          <label for="position">Position</label>
+          <input
+            type="text"
+            id="position"
+            formControlName="position"
+            placeholder="Your job title">
+        </div>
+      </div>
+    </div>
+
+    <!-- Inquiry Details Section -->
+    <div class="form-section">
+      <h3>Inquiry Details</h3>
+      
+      <div class="form-group">
+        <label for="inquiryType">Type of Inquiry *</label>
+        <select
+          id="inquiryType"
+          formControlName="inquiryType"
+          [class.error]="isFieldInvalid('inquiryType')">
+          <option value="">Select inquiry type</option>
+          <option *ngFor="let type of inquiryTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+        <div *ngIf="isFieldInvalid('inquiryType')" class="error-message">
+          {{ getFieldError('inquiryType') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject *</label>
+        <input
+          type="text"
+          id="subject"
+          formControlName="subject"
+          [class.error]="isFieldInvalid('subject')"
+          placeholder="Brief description of your inquiry">
+        <div *ngIf="isFieldInvalid('subject')" class="error-message">
+          {{ getFieldError('subject') }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Technology Modules Section -->
+    <div class="form-section">
+      <h3>Technology Modules of Interest</h3>
+      <p class="section-description">Select all technologies you're interested in or need assistance with:</p>
+      
+      <div class="technology-grid">
+        <div *ngFor="let tech of technologyModules" class="technology-item">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              [checked]="isTechnologySelected(tech.value)"
+              (change)="onTechnologyChange($event, tech.value)">
+            <span class="checkmark"></span>
+            {{ tech.label }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Section -->
+    <div class="form-section">
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea
+          id="message"
+          formControlName="message"
+          rows="6"
+          [class.error]="isFieldInvalid('message')"
+          placeholder="Please provide detailed information about your inquiry, requirements, or questions..."></textarea>
+        <div *ngIf="isFieldInvalid('message')" class="error-message">
+          {{ getFieldError('message') }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences Section -->
+    <div class="form-section">
+      <h3>Preferences</h3>
+      
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="newsletter">
+          <span class="checkmark"></span>
+          Subscribe to our technology newsletter for updates and insights
+        </label>
+      </div>
+
+      <div class="checkbox-group required">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            formControlName="privacyAccepted"
+            [class.error]="isFieldInvalid('privacyAccepted')">
+          <span class="checkmark"></span>
+          I agree to the <a href="/privacy-policy" target="_blank">Privacy Policy</a> and 
+          <a href="/terms-of-service" target="_blank">Terms of Service</a> *
+        </label>
+        <div *ngIf="isFieldInvalid('privacyAccepted')" class="error-message">
+          You must accept the privacy policy to continue
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="resetForm()"
+        [disabled]="isSubmitting">
+        Reset Form
+      </button>
+      
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSubmitting || !contactForm.valid">
+        <span *ngIf="isSubmitting" class="spinner"></span>
+        {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+      </button>
+    </div>
+  </form>
+</div>
+
