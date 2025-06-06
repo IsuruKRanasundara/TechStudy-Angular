@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="form-row">
+  <div class="form-row">
     <div class="form-group">
       <label for="email">Email Address</label>
       <input 
@@ -54,23 +54,10 @@
         {{ getErrorMessage('email') }}
       </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="role">Role</label>
-      <select 
-        id="role" 
-        formControlName="role"
-        [class.error]="isFieldInvalid('role')">
-        <option value="">Select your role</option>
-        <option *ngFor="let role of roles" [value]="role.value">
-          {{ role.label }}
-        </option>
-      </select>
-      <div class="error-message" *ngIf="isFieldInvalid('role')">
-        {{ getErrorMessage('role') }}
-      </div>
-    </div>
-    </div>
+    
+    
 
     <div class="form-group">
       <label for="password">Password</label>

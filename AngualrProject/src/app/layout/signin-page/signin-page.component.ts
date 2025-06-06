@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
 @Component({
   selector: 'app-signin-page',
 
@@ -26,6 +29,35 @@ export class SigninPageComponent {
     });
   }
 
+
+
+
+
+
+
+
+
+
+  forgotPassword() {
+    //want to functioning the firebase forgot password functionality
+    // This is a placeholder for the actual forgot password logic
+    console.log('Forgot password clicked');
+    
+    const email = this.signinForm.get('email')?.value;
+    if (email) {
+      // Call your Firebase forgot password function here
+      const auth = getAuth();
+      sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log('Password reset email sent successfully');
+      })
+      .catch((error) => {
+        console.error('Error sending password reset email:', error);
+      });
+    } else {
+      console.log('Email is required for password reset');
+    }
+  }
   togglePassword() {
     this.showPassword = !this.showPassword;
   }

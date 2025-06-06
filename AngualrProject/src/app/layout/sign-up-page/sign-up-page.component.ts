@@ -1,8 +1,10 @@
 // signup.component.ts
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf,NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { getAuth , createUserWithEmailAndPassword} from '@angular/fire/auth'; // Import AngularFireAuth if you plan to use Firebase Auth
+import { FirebaseService } from '../../../../FireBase/BackEnd/FireBaseConfig'; // Adjust the path as necessary
 
 @Component({
   selector: 'app-signup',
@@ -16,23 +18,17 @@ export class SignupComponent implements OnInit {
   showConfirmPassword = false;
   isLoading = false;
 
-  roles = [
-    { value: 'developer', label: 'Developer' },
-    { value: 'student', label: 'Student' },
-    { value: 'researcher', label: 'Researcher' },
-    { value: 'educator', label: 'Educator' },
-    { value: 'other', label: 'Other' }
-  ];
+
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private firebaseService: FirebaseService
   ) {
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      role: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
       confirmPassword: ['', [Validators.required]],
       terms: [false, [Validators.requiredTrue]]
@@ -91,7 +87,6 @@ export class SignupComponent implements OnInit {
       firstName: 'First name',
       lastName: 'Last name',
       email: 'Email',
-      role: 'Role',
       password: 'Password',
       confirmPassword: 'Confirm password'
     };
@@ -104,6 +99,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(): void {
+    let auth = getAuth(); // Placeholder for Firebase Auth, adjust based on your setup
     if (this.signupForm.valid) {
       this.isLoading = true;
       
@@ -112,17 +108,24 @@ export class SignupComponent implements OnInit {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        role: formData.role,
         password: formData.password
       };
 
-      // Simulate API call
-      setTimeout(() => {
-        console.log('User signup data:', userData);
-        this.isLoading = false;
-        alert('Account created successfully! Welcome to ModuleFinder!');
-        // this.router.navigate(['/login']);
-      }, 2000);
+     createUserWithEmailAndPassword(auth, userData.email, userData.password)
+        .then((response) => {
+          // User signed up successfully
+          const user = response.user;
+          console.log('User signed up:', user);
+          this.isLoading = false;
+          alert('Account created successfully! Welcome to ModuleFinder!');
+          // Navigate to login or another page
+          this.router.navigate(['/login']);
+        })
+        .catch((error) => {
+          console.error('Error signing up:', error);
+          this.isLoading = false;
+          alert('Error creating account. Please try again.');
+        });
     } else {
       this.markFormGroupTouched();
     }
