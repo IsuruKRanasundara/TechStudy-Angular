@@ -1,11 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { generateResponse } from '../../../../FireBase/BackEnd/AiLogic';
 
-
-export interface LectureNote {
+interface LectureNote {
   id: number;
   title: string;
   technology: string;
@@ -13,44 +11,36 @@ export interface LectureNote {
   description: string;
   type: string;
   dateAdded: Date;
-  difficulty: string;
-
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
-  
-// Body Components of home page 
+
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, FormsModule],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
-  
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
-export class HomePageComponent { 
- 
-// Search and filter properties
-searchQuery: string = '';
-isFilterOpen: boolean = false;
-sortBy: string = 'relevance'; // default sort option
-sortOptions: string[] = ['relevance', 'date', 'title', 'difficulty'];
+export class HomePageComponent {
+  searchQuery = '';
+  isFilterOpen = false;
+  sortBy: 'relevance' | 'date' | 'title' | 'difficulty' = 'relevance';
+  sortOptions = ['relevance', 'date', 'title', 'difficulty'];
 
-
- 
-  technologies: string[] = [
-    'Angular', 'React', 'Vue.js', 'Node.js', 'Python', 'Java', 
+  technologies = [
+    'Angular', 'React', 'Vue.js', 'Node.js', 'Python', 'Java',
     'C++', 'JavaScript', 'TypeScript', 'Docker', 'Kubernetes', 'AWS'
   ];
-  
-  difficultyLevels: string[] = ['beginner', 'intermediate', 'advanced'];
-  
-  selectedFilters: {
-    technology: string[];
-    type: string[];
-    difficulty: string[];
-  } = {
-    technology: [],
-    type: [],
-    difficulty: []
+  difficultyLevels = ['beginner', 'intermediate', 'advanced'];
+  typeOptions = ['lecture', 'demonstration'];
+
+  selectedFilters = {
+    technology: [] as string[],
+    type: [] as string[],
+    difficulty: [] as string[]
   };
+  aiQuery = ''; // For AI search query
+  showAiSection = false; // For AI section toggle if needed
 
   lectureNotes: LectureNote[] = [
     {
@@ -115,51 +105,7 @@ sortOptions: string[] = ['relevance', 'date', 'title', 'difficulty'];
     }
   ];
 
-  filteredResults: LectureNote[] = [...this.lectureNotes];
-
-  toggleFilter(): void {
-    this.isFilterOpen = !this.isFilterOpen;
-  }
-
-  onSearch(): void {
-    this.filterResults();
-  }
-
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.filterResults();
-  }
-
-  onFilterChange(filterType: keyof typeof this.selectedFilters, value: string, event: any): void {
-    if (event.target.checked) {
-      this.selectedFilters[filterType].push(value);
-    } else {
-      const index = this.selectedFilters[filterType].indexOf(value);
-      if (index > -1) {
-        this.selectedFilters[filterType].splice(index, 1);
-      }
-    }
-  }
-
-  clearFilters(): void {
-    this.selectedFilters = {
-      technology: [],
-      type: [],
-      difficulty: []
-    };
-    this.filterResults();
-  }
-
-  applyFilters(): void {
-    this.filterResults();
-    this.isFilterOpen = false;
-  }
-
-  onSortChange(): void {
-    this.sortResults();
-  }
-
-  private filterResults(): void {
+  get filteredResults(): LectureNote[] {
     let results = [...this.lectureNotes];
 
     // Filter by search query
@@ -179,47 +125,110 @@ sortOptions: string[] = ['relevance', 'date', 'title', 'difficulty'];
         this.selectedFilters.technology.includes(item.technology)
       );
     }
-
     if (this.selectedFilters.type.length > 0) {
       results = results.filter(item =>
         this.selectedFilters.type.includes(item.type)
       );
     }
-
     if (this.selectedFilters.difficulty.length > 0) {
       results = results.filter(item =>
         this.selectedFilters.difficulty.includes(item.difficulty)
       );
     }
 
-    this.filteredResults = results;
-    this.sortResults();
-  }
-
-  private sortResults(): void {
+    // Sort
     switch (this.sortBy) {
       case 'date':
-        this.filteredResults.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
+        results.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
         break;
       case 'title':
-        this.filteredResults.sort((a, b) => a.title.localeCompare(b.title));
+        results.sort((a, b) => a.title.localeCompare(b.title));
         break;
       case 'difficulty':
-        const difficultyOrder = { 'beginner': 1, 'intermediate': 2, 'advanced': 3 };
-        this.filteredResults.sort(
-          (a, b) =>
-            difficultyOrder[a.difficulty as keyof typeof difficultyOrder] -
-            difficultyOrder[b.difficulty as keyof typeof difficultyOrder]
-        );
+        const order = { 'beginner': 1, 'intermediate': 2, 'advanced': 3 };
+        results.sort((a, b) => order[a.difficulty] - order[b.difficulty]);
         break;
       default:
-        // Keep original order for relevance
+        // relevance: keep original order
         break;
     }
-  }
-  isBrowser = false;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
+    return results;
+  }
+
+  toggleFilter() {
+    this.isFilterOpen = !this.isFilterOpen;
+  }
+
+  async onSearch() {
+    try {
+      this.showAiSection = true; // Show AI section when search is triggered
+      console.log("Search triggered with query:", this.searchQuery);
+      let searchQuery = this.searchQuery
+      console.log("Search query:", searchQuery);
+      if (searchQuery.trim() === '') {
+        throw new Error('Search query cannot be empty');
+      }
+      this.aiQuery = await generateResponse(searchQuery);
+      console.log("AI generated response:", this.aiQuery);
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+    }
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+  }
+  async aiSearch() {
+    if (this.searchQuery.trim() === '') {
+      this.aiQuery = 'Please enter a search query for the AI assistant.';
+      return;
+    }
+    this.aiQuery = 'Generating response...'; // <-- Prompting text
+    try {
+      const text = await generateResponse(this.searchQuery);
+      this.aiQuery = text;
+    } catch (error) {
+      this.aiQuery = 'Error fetching AI response.';
+      console.error(error);
+    }
+  }
+
+  // Handles checkbox change event from filter panel
+  onFilterChange(filterType: 'technology' | 'type' | 'difficulty', value: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    const arr = this.selectedFilters[filterType];
+    if (checked) {
+      if (!arr.includes(value)) arr.push(value);
+    } else {
+      const idx = arr.indexOf(value);
+      if (idx > -1) arr.splice(idx, 1);
+    }
+  }
+
+  clearFilters() {
+    this.selectedFilters = {
+      technology: [],
+      type: [],
+      difficulty: []
+    };
+  }
+
+  applyFilters() {
+    this.isFilterOpen = false;
+  }
+
+  onSortChange() {
+    // Sorting is handled reactively via getter
+  }
+
+  clearAiResponse() {
+    this.aiQuery = '';
+  }
+
+  get wordCount(): number {
+    return this.aiQuery
+      ? this.aiQuery.trim().split(/\s+/).filter(w => w.length > 0).length
+      : 0;
   }
 }

@@ -1,5 +1,4 @@
-   
-    <div>
+<div>
     <div class="lecture-search-container">
       <!-- Header Section -->
       <div class="header-section">
@@ -11,15 +10,11 @@
       <div class="search-section">
         <div class="search-wrapper">
           <!-- Filter Button -->
-          <button 
-            class="filter-button"
-            (click)="toggleFilter()"
-            [class.active]="isFilterOpen">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
-            </svg>
-            Filter
-          </button>
+        <button 
+            class="aiSearch-button"
+            (click)="aiSearch()">
+            AI Learning Assistant
+        </button>
 
           <!-- Search Input -->
           <div class="search-input-wrapper">
@@ -30,7 +25,6 @@
               type="text" 
               placeholder="Search for technologies, topics, or concepts..."
               [(ngModel)]="searchQuery"
-              (input)="onSearch()"
               class="search-input">
             <button 
               *ngIf="searchQuery" 
@@ -42,9 +36,71 @@
             </button>
           </div>
         </div>
+<div class="ai-response-wrapper">
 
-        <!-- Filter Panel -->
-        <div class="filter-panel" [class.open]="isFilterOpen">
+    <div class="ai-response-container">
+        <div class="ai-header">
+            <div class="ai-avatar">AI</div>
+            <div>
+                <h2 class="ai-title">TechStudy Assistant</h2>
+                <p class="ai-subtitle">Generating response...</p>
+            </div>
+        </div>
+        
+        <div class="ai-response">
+            <div class="response-text" id="response-text" (ngModelChange)="onSearch()">{{aiQuery}}</div>
+            <div class="typing-indicator" id="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>AI is thinking...</span>
+            </div>
+            <div class="word-count">
+                <span id="word-count">0</span> words
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-response-area" *ngIf="showAiSection">
+  <textarea
+    class="ai-input"
+    rows="6"
+    readonly
+    [value]="aiQuery || 'Ask the AI for help with your learning resources!'">
+  </textarea>
+  <button class="clear-ai-btn" (click)="clearAiResponse()" *ngIf="aiQuery">Clear AI Response</button>
+  <div class="word-count">
+    {{ wordCount }} word{{ wordCount === 1 ? '' : 's' }}
+  </div>
+</div>
+
+    </div>
+      <!-- AI Content Section -->
+      <div class="filter-container">
+        <div class="filter-header">
+          <h3>Filters</h3>
+        </div>
+      </div>
+      <div class="filter-section">
+        <button
+          class="filter-button"
+          (click)="toggleFilter()"
+          [class.active]="isFilterOpen">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+            </svg>
+            Filter
+          </button>
+        </div>
+   
+    <div class="filter-panel" [class.open]="isFilterOpen">
+      
           <div class="filter-content">
             <div class="filter-group">
               <h3>Technology</h3>
@@ -99,7 +155,6 @@
           </div>
         </div>
       </div>
-
       <!-- Results Section -->
       <div class="results-section">
         <div class="results-header">
@@ -149,4 +204,3 @@
       </div>
     </div>
    </div>
- 

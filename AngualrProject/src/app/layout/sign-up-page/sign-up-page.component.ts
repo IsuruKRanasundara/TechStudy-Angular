@@ -3,7 +3,7 @@ import { CommonModule, NgIf,NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { getAuth , createUserWithEmailAndPassword} from '@angular/fire/auth'; // Import AngularFireAuth if you plan to use Firebase Auth
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from '@angular/fire/auth'; // Import AngularFireAuth if you plan to use Firebase Auth
 import { FirebaseService } from '../../../../FireBase/BackEnd/FireBaseConfig'; // Adjust the path as necessary
 
 @Component({
@@ -140,14 +140,39 @@ export class SignupComponent implements OnInit {
 
   signupWithGoogle(): void {
     // Implement Google OAuth
-    console.log('Google signup clicked');
-    alert('Google signup integration would be implemented here');
+    let auth = getAuth();
+    // Placeholder for Google OAuth, adjust based on your setup
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // User signed in successfully
+        const user = result.user;
+        console.log('Google signup successful:', user);
+        alert('Google signup successful!');
+        // Navigate to another page or perform additional actions
+      })
+      .catch((error) => {
+        console.error('Error during Google signup:', error);
+        alert('Error during Google signup. Please try again.');
+      });
   }
 
   signupWithGithub(): void {
     // Implement GitHub OAuth
-    console.log('GitHub signup clicked');
-    alert('GitHub signup integration would be implemented here');
+    const auth = getAuth();
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // User signed in successfully
+        const user = result.user;
+        console.log('GitHub signup successful:', user);
+        alert('GitHub signup successful!');
+        // Navigate to another page or perform additional actions
+      })
+      .catch((error) => {
+        console.error('Error during GitHub signup:', error);
+        alert('Error during GitHub signup. Please try again.');
+      });
   }
 
   goToLogin(): void {

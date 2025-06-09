@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 @Component({
   selector: 'app-signin-page',
@@ -33,10 +33,39 @@ export class SigninPageComponent {
 
 
 
+  signInWithGoogle() {
+    // Placeholder for Google sign-in logic
+    console.log('Google sign-in clicked');
+    
+    // You can implement Google sign-in using Firebase Auth here
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log('Google sign-in successful:', result);
+      })
+      .catch((error) => {
+        console.error('Error during Google sign-in:', error);
+      });
+  }
 
+  signInWithGithub() {
+    // Placeholder for GitHub sign-in logic
+    console.log('GitHub sign-in clicked');
 
+    // You can implement GitHub sign-in using Firebase Auth here
+    const auth = getAuth();
+    const provider = new GithubAuthProvider();
 
-
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log('GitHub sign-in successful:', result);
+      })
+      .catch((error) => {
+        console.error('Error during GitHub sign-in:', error);
+      });
+  }
 
   forgotPassword() {
     //want to functioning the firebase forgot password functionality
