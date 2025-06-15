@@ -66,6 +66,8 @@ export class SigninPageComponent {
         console.error('Error during GitHub sign-in:', error);
       });
   }
+  
+  
 
   forgotPassword() {
     //want to functioning the firebase forgot password functionality

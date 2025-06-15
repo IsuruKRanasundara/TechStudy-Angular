@@ -48,7 +48,7 @@
         </div>
         
         <div class="ai-response">
-            <div class="response-text" id="response-text" (ngModelChange)="onSearch()">{{aiQuery}}</div>
+            <div class="response-text" id="response-text" (ngModelChange)="aiSearch()">{{aiQuery}}</div>
             <div class="typing-indicator" id="typing-indicator">
                 <div class="typing-dot"></div>
                 <div class="typing-dot"></div>
@@ -62,7 +62,7 @@
                 <span>AI is thinking...</span>
             </div>
             <div class="word-count">
-                <span id="word-count">0</span> words
+                <span id="word-count">{{ wordCount }}</span> words
             </div>
         </div>
     </div>
@@ -105,48 +105,17 @@
             <div class="filter-group">
               <h3>Technology</h3>
               <div class="filter-options">
-                <label *ngFor="let tech of technologies" class="filter-option">
+                <label *ngFor="let tech of [technologies]" class="filter-option">
                   <input 
                     type="checkbox" 
                     [value]="tech"
-                    (change)="onFilterChange('technology', tech, $event)">
+                    (change)="onFilterChange('tech')">
                   <span>{{tech}}</span>
                 </label>
               </div>
             </div>
 
-            <div class="filter-group">
-              <h3>Type</h3>
-              <div class="filter-options">
-                <label class="filter-option">
-                  <input 
-                    type="checkbox" 
-                    value="lecture"
-                    (change)="onFilterChange('type', 'lecture', $event)">
-                  <span>Lecture Notes</span>
-                </label>
-                <label class="filter-option">
-                  <input 
-                    type="checkbox" 
-                    value="demonstration"
-                    (change)="onFilterChange('type', 'demonstration', $event)">
-                  <span>Demonstrations</span>
-                </label>
-              </div>
-            </div>
 
-            <div class="filter-group">
-              <h3>Difficulty</h3>
-              <div class="filter-options">
-                <label *ngFor="let level of difficultyLevels" class="filter-option">
-                  <input 
-                    type="checkbox" 
-                    [value]="level"
-                    (change)="onFilterChange('difficulty', level, $event)">
-                  <span>{{level | titlecase}}</span>
-                </label>
-              </div>
-            </div>
 
             <div class="filter-actions">
               <button class="clear-filters-btn" (click)="clearFilters()">Clear All</button>
@@ -158,41 +127,26 @@
       <!-- Results Section -->
       <div class="results-section">
         <div class="results-header">
-          <h2>{{filteredResults.length}} Results Found</h2>
-          <div class="sort-options">
-            <label>Sort by:</label>
-            <select [(ngModel)]="sortBy" (change)="onSortChange()">
-              <option value="relevance">Relevance</option>
-              <option value="date">Date Added</option>
-              <option value="title">Title</option>
-              <option value="difficulty">Difficulty</option>
-            </select>
-          </div>
+          <h2>{{lectureNotesCollection.length}} Results Found</h2>
+         
         </div>
 
         <!-- Results Grid -->
         <div class="results-grid">
-          <div *ngFor="let item of filteredResults" class="result-card">
+          <div *ngFor="let item of lectureNotesCollection" class="result-card">
             <div class="card-header">
-              <div class="card-type" [class]="item.type">
-                {{item.type === 'lecture' ? '📚' : '🎯'}} {{item.type | titlecase}}
-              </div>
-              <div class="card-difficulty" [class]="item.difficulty">
-                {{item.difficulty | titlecase}}
-              </div>
+              <h3 class="card-title">{{item.title}}</h3>
             </div>
-            <h3 class="card-title">{{item.title}}</h3>
-            <p class="card-tech">{{item.technology}} • {{item.category}}</p>
-            <p class="card-description">{{item.description}}</p>
+            <h3 class="card-title">{{item.technology}}</h3>
+            <p class="card-description">{{item.content}}</p>
             <div class="card-footer">
-              <span class="card-date">{{item.dateAdded | date:'short'}}</span>
               <button class="view-btn">View Resource</button>
             </div>
           </div>
         </div>
 
         <!-- No Results -->
-        <div *ngIf="filteredResults.length === 0" class="no-results">
+        <div *ngIf="lectureNotesCollection.length === 0" class="no-results">
           <div class="no-results-content">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
               <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>

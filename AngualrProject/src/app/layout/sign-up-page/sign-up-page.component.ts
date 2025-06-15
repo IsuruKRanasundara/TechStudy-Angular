@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from '@angular/fire/auth'; // Import AngularFireAuth if you plan to use Firebase Auth
-import { FirebaseService } from '../../../../FireBase/BackEnd/FireBaseConfig'; // Adjust the path as necessary
+import { saveUserData } from '../../../../FireBase/BackEnd/dataBase';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +23,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private firebaseService: FirebaseService
+    
   ) {
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
@@ -117,6 +117,7 @@ export class SignupComponent implements OnInit {
           const user = response.user;
           console.log('User signed up:', user);
           this.isLoading = false;
+          saveUserData(userData); // Save user data to Firestore
           alert('Account created successfully! Welcome to ModuleFinder!');
           // Navigate to login or another page
           this.router.navigate(['/login']);
@@ -149,7 +150,7 @@ export class SignupComponent implements OnInit {
         const user = result.user;
         console.log('Google signup successful:', user);
         alert('Google signup successful!');
-        // Navigate to another page or perform additional actions
+        saveUserData(user);
       })
       .catch((error) => {
         console.error('Error during Google signup:', error);
@@ -167,6 +168,7 @@ export class SignupComponent implements OnInit {
         const user = result.user;
         console.log('GitHub signup successful:', user);
         alert('GitHub signup successful!');
+       saveUserData(user); // Save user data to Firestore
         // Navigate to another page or perform additional actions
       })
       .catch((error) => {
