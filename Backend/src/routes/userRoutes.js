@@ -1,19 +1,27 @@
 //declaire the user routes
-import express from 'express';
-import { getUser, createUser, updateUser, deleteUser } from '../controllers/userController.js';
-import { protect } from '../middleware/authMiddleware.js';
-import { getAllUsers } from '../controller/userController.js';
-const router = express.Router();
-// Route to get all users
-router.get('/', protect, getAllUsers);
-router.get('/:id', protect, getUserProfile);
+import {
+    getAllUsers,
+    getUserProfile,
+    removeUser,
+    updateUserProfile,
+    registerUser
+} from "../controller/userController";
 
-// Route to create a new user
-router.post('/', protect, registerUser);
-// Route to update a user by ID
-router.put('/:id', protect, updateUserProfile);
-// Route to delete a user by ID
-router.delete('/:id', protect, removeUser);
+const express=require('express');
+const authenticateToken=require('../middleware/authMiddleware');
+
+const router = express.Router();
+
+//Login Route
+router.get('/protected',authenticateToken,(req,res)=>{
+    res.json({message:'Protected data',user:req.user});
+})
+router.get('/', authenticateToken, getAllUsers);
+router.get('/:id', authenticateToken, getUserProfile);
+router.post('/', authenticateToken, registerUser);
+router.put('/:id', authenticateToken, updateUserProfile);
+router.delete('/:id', authenticateToken, removeUser);
+
+
 // Export the router
 export default router;
-// This code defines the routes for user-related operations in an Express application.

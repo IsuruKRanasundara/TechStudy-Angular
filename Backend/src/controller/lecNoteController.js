@@ -1,25 +1,33 @@
 const lecNote=require('../models/lecNote');
+const lectureNoteRes=(lectureNote,res)=>({
 
+    _id:lectureNote._id,
+    category:lectureNote.category,
+    title:lectureNote.title,
+    description:lectureNote.description,
+    filePath:lectureNote.filePath,
+    createdBy:lectureNote.createdBy
+})
 const createLecNote = async (req, res) => {
     try {
 
-        const {title, filePath} = req.body;
-        let userId = req.user._id;
+        const {title, filePath,category,description,createdAt} = req.body;
+        const createdBy = req.user._id;
 
         const lecNoteData = new lecNote({
+            category,
             title,
+            description,
             filePath,
-            createdBy: userId
+            createdAt,
+            createdBy,
         });
         await lecNoteData.save();
-        res.status(201).json({message: 'Lecture note created successfully', lecNoteData});
+        res.status(201).json(lectureNoteRes(lecNoteData,'Lecture note Created Successfully!'));
 
     }catch (e){
         console.error(e);
         res.status(500).json({message: 'Internal server error'});
-
-
-
     }
 
 
@@ -28,8 +36,11 @@ const createLecNote = async (req, res) => {
 };
 const getAllLecNotes = async (req, res) => {
     try {
-        const lecNotes = await lecNote.find().populate('createdBy', 'name email');
-        res.status(200).json(lecNotes);
+        const lecNotes = await lecNote.find();
+        const response=lecNotes.map((lecNote)=>{
+
+        })
+        res.status(200).json(lectureNoteRes(lecNoteData,'Lecture note Created Successfully!'));
     } catch (e) {
         console.error(e);
         res.status(500).json({message: 'Internal server error'});

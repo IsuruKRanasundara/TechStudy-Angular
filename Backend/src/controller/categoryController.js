@@ -1,4 +1,4 @@
-const category = require('../models/categoryModel');
+const category = require('../models/category');
 const createCategory = async (req, res) => {
     try {
         const { name } = req.body;
@@ -48,7 +48,7 @@ const updateCategory = async (res, req) => {
         const updatedCategory = await category.findByIdAndUpdate({ _id: req.params._id });
         res.status(201).json(updateCategory);
 
-    
+
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: "Server error,try again shortly" });
@@ -63,13 +63,13 @@ const updateCategory = async (res, req) => {
 
     }
     catch (e) {
-        
+
         console.error(e);
         res.status(500).json({ message: "Server error,try again shortly" });
     }
-        
-    
-    
+
+
+
 };
 
 const categoryController = {

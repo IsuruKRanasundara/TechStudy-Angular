@@ -38,7 +38,7 @@ async function getAllLecNotes() {
     const lectureNotesCollection = collection(db, 'lectureNotes');
     const lectureNotesSnapshot = await getDocs(lectureNotesCollection);
     if (!lectureNotesSnapshot.empty) {
-        console.log('Lecture notes found:', lectureNotesSnapshot.docs.length);
+        console.log('Lecture notes found:', lectureNotesSnapshot.docs);
         return lectureNotesSnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
     } else {
         console.log('No lecture notes found');

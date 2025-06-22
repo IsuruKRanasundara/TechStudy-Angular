@@ -5,6 +5,12 @@ const lecNoteSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         auto: true,
     },
+    category:{
+        type:String,
+        required:true,
+        ref:'Category'
+
+    },
     title: {
         type: String,
         required: true,
@@ -13,7 +19,7 @@ const lecNoteSchema = new Schema({
         type: String,
         required: false,
     },
-    
+
     filePath: {
         type: String,
         required: true,
@@ -22,6 +28,14 @@ const lecNoteSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+
+
+
+
+
+
+
+
     createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
@@ -30,19 +44,6 @@ const lecNoteSchema = new Schema({
 
 
 
-
-
-   
-    technology: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Technology', // Reference to the Technology model
-        required: false,
-    },
-    category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category', // Reference to the Category model
-        required: true,
-    },
 });
 
 

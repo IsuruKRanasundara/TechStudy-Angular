@@ -10,8 +10,10 @@ const userMiddleware = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // attach user info to request
+        jwt.verify(token, process.env.JWT_SECRET || 'secretKey',(err,user)=> {
+            if(err) return res.sendStatus(403);
+        });
+        req.user = user; // attach user info to request
         next();
     } catch (err) {
         res.status(400).json({ message: "Invalid token." });

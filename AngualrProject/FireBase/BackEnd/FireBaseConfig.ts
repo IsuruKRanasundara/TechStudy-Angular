@@ -15,11 +15,13 @@ const firebaseConfig = {
       appId: "1:168809016537:web:9f4304705ff2374f04a2c8"
 };
 
+const blogAPIKey = 'AIzaSyA-_ZZbY_nHxq9YqfLwP45eaGVGiuEqitI';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const AI = getAI(app, { backend: new GoogleAIBackend() });
 const model = getGenerativeModel(AI, { model: "gemini-2.0-flash" });
 const db = getFirestore(app);
+
 
 export { auth,AI,model,app, provider, signInWithPopup, db, doc, setDoc, getDoc };
