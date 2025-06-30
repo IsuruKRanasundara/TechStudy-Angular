@@ -1,27 +1,24 @@
 //declaire the user routes
-import {
-    getAllUsers,
-    getUserProfile,
-    removeUser,
-    updateUserProfile,
-    registerUser
-} from "../controller/userController";
-
 const express=require('express');
+const router = express.Router();
+
+
 const authenticateToken=require('../middleware/authMiddleware');
 
-const router = express.Router();
+const role=require('../middleware/userRoleMiddleware')
+
+const {getAllUsers, getUserProfile, updateUserProfile, removeUser, registerUser} = require("../controller/userController");
 
 //Login Route
 router.get('/protected',authenticateToken,(req,res)=>{
     res.json({message:'Protected data',user:req.user});
 })
-router.get('/', authenticateToken, getAllUsers);
+router.get('/', authenticateToken, role,getAllUsers);
 router.get('/:id', authenticateToken, getUserProfile);
-router.post('/', authenticateToken, registerUser);
+router.post('/',  registerUser);
 router.put('/:id', authenticateToken, updateUserProfile);
-router.delete('/:id', authenticateToken, removeUser);
+router.delete('/:id', authenticateToken, role,removeUser);
 
 
 // Export the router
-export default router;
+module.exports = router;

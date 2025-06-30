@@ -1,4 +1,4 @@
-const technology=require('../models/technologyModel');
+/*const technology=require('../models/technologyModel');
 
 
 
@@ -49,7 +49,7 @@ const getTechnologyByTechId = async (req, res) => {
     }
 };
 const updateTechnology = async (req, res) => {
-    
+
 
 
     try {
@@ -62,9 +62,9 @@ const updateTechnology = async (req, res) => {
         const technologYContent = await technology.findByIdAndUpdate({ _id: req.params._id });
         res.status(200).json({ message: "Technology updated successfully" });
 
-    
-    
-    
+
+
+
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: "Server Error,Try Again Shortly" });
@@ -88,3 +88,5 @@ const technologyController = {
 }
 
 module.exports = technologyController;
+
+ */

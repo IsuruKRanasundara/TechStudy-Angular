@@ -1,8 +1,12 @@
-const mongoose = require('mongoose');
 
-// Load environment variables
-//Todo:have to replace with mongoDb database
-const dbURI = process.env.MONGO_URI || 'mongodb://localhost:27017/database';
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables
+
+const dbURI = process.env.MONGO_URI;
+const express = require('express');
+const app = express();
+const port = 3000;
+
 
 // Connect to the database
 const connectDB = async () => {
@@ -17,5 +21,11 @@ const connectDB = async () => {
         process.exit(1); // Exit process with failure
     }
 };
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
 module.exports = connectDB;

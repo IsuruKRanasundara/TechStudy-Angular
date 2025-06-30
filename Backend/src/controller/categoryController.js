@@ -1,4 +1,4 @@
-const category = require('../models/category');
+/*const category = require('../models/category');
 const createCategory = async (req, res) => {
     try {
         const { name } = req.body;
@@ -80,3 +80,7 @@ const categoryController = {
     deleteCategory
 }
 module.exports = categoryController;
+
+
+
+ */

@@ -1,14 +1,23 @@
-import express from 'express';
-import { getAllTechnologies, getTechnologyById, createTechnology, updateTechnology, deleteTechnology } from '../controllers/technologyController.js';
-import { protect } from '../middleware/authMiddleware.js';
+const express=require('express');
 
+
+
+
+
+const {
+    getAllTechnologies,
+    createTechnology,
+    updateTechnology,
+    deleteTechnology
+} = require('../controller/tecnologyController');
+
+
+const protect=require('../middleware/userRoleMiddleware');
 const router = express.Router();
-
 // Route to get all technologies
 router.get('/', protect, getAllTechnologies);
 
 // Route to get a technology by ID
-router.get('/:id', protect, getTechnologyByTechId);
 
 // Route to create a new technology
 router.post('/', protect, createTechnology);
@@ -20,4 +29,4 @@ router.put('/:id', protect, updateTechnology);
 router.delete('/:id', protect, deleteTechnology);
 
 // Export the router
-export default router;
+module.exports=router;
